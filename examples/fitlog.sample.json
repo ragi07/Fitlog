@@ -1,0 +1,78 @@
+{
+  "format": "fitlog-v1",
+  "exercises": [
+    {
+      "id": "ex-bench",
+      "name": "Bench Press",
+      "muscle_group": "Chest"
+    },
+    {
+      "id": "ex-row",
+      "name": "Rudern",
+      "muscle_group": "Back"
+    },
+    {
+      "id": "ex-squat",
+      "name": "Squat",
+      "muscle_group": "Legs"
+    },
+    {
+      "id": "ex-shoulder",
+      "name": "Shoulder Press",
+      "muscle_group": "Shoulders"
+    },
+    {
+      "id": "ex-curl",
+      "name": "Biceps Curl",
+      "muscle_group": "Arms"
+    },
+    {
+      "id": "ex-crunch",
+      "name": "Crunch",
+      "muscle_group": "Core"
+    }
+  ],
+  "workouts": [
+    {
+      "id": "w1",
+      "exercise_id": "ex-bench",
+      "date": "2026-10-05",
+      "sets": 3,
+      "reps": 10,
+      "weight": 40
+    },
+    {
+      "id": "w2",
+      "exercise_id": "ex-row",
+      "date": "2026-10-07",
+      "sets": 3,
+      "reps": 12,
+      "weight": 30
+    },
+    {
+      "id": "w3",
+      "exercise_id": "ex-bench",
+      "date": "2026-10-12",
+      "sets": 3,
+      "reps": 10,
+      "weight": 45
+    },
+    {
+      "id": "w4",
+      "exercise_id": "ex-bench",
+      "date": "2026-10-12",
+      "sets": 2,
+      "reps": 8,
+      "weight": 47.5
+    },
+    {
+      "id": "w5",
+      "exercise_id": "ex-crunch",
+      "date": "2026-10-14",
+      "sets": 3,
+      "reps": 20,
+      "weight": 0
+    }
+  ],
+  "weekly_goal": 3
+}
