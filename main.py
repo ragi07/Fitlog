@@ -1,4 +1,5 @@
 """Startgerüst für das FitLog-Menü."""
+from exercises import DEFAULT_EXERCISES, show_exercises
 
 MENU_OPTIONS = {
     "1": "Show exercises",
@@ -36,8 +37,10 @@ def main():
             print("Please enter a number from 0 to 10.")
             continue
 
-        # Platzhalter: Hier werden die Funktionen des Teams eingebunden.
-        print(f"{MENU_OPTIONS[choice]}: not implemented yet.")
+        if choice == "1":
+            show_exercises(DEFAULT_EXERCISES)
+        else:
+            print(f"{MENU_OPTIONS[choice]}: not implemented yet.")
 
 
 if __name__ == "__main__":
