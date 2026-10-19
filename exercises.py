@@ -1,25 +1,31 @@
 DEFAULT_EXERCISES = [
     {
+        "id": 1,
         "name": "Bench Press",
         "muscle_group": "Chest"
     },            
         {
+        "id": 2,
         "name": "Pull Up",
         "muscle_group": "Back"
     },
     {
+        "id": 3,
         "name": "Squat",
         "muscle_group": "Legs"
     },
     {
+        "id": 4,
         "name": "Shoulder Press",
         "muscle_group": "Shoulders"
     },
     {
+        "id": 5,
         "name": "Bicep Curl",
         "muscle_group": "Arms"
     },
     {
+        "id": 6,
         "name": "Plank",
         "muscle_group": "Core"
     }
