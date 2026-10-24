@@ -39,10 +39,4 @@ def next_id(items):
         return 1
     return items[-1]["id"] + 1
 
-if __name__ == "__main__":
-    # Nur zum Testen während Developement
-    # PK --> Diesen Part léschen sobald main Funktionen verwendet
-    data = load_data()
-    print("Nächste übungid:", next_id(data["exercises"]))
-    print("nächste trainigid", next_id(data["workouts"]))
 
