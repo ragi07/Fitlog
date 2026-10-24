@@ -32,9 +32,17 @@ def load_data():
         return json.load(f)
 
 
+def next_id(items):
+    """Vergibt neue id, Letzte ID + 1"""
+    # Leere Liste --> Erste ID = 1
+    if len(items) == 0:
+        return 1
+    return items[-1]["id"] + 1
+
 if __name__ == "__main__":
     # Nur zum Testen während Developement
     # PK --> Diesen Part léschen sobald main Funktionen verwendet
     data = load_data()
-    print(data)
+    print("Nächste übungid:", next_id(data["exercises"]))
+    print("nächste trainigid", next_id(data["workouts"]))
 
