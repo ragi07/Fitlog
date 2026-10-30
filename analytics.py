@@ -111,3 +111,33 @@ def show_progress(data):
     print(f"Last weight: {progress['last_weight']:g} kg")
     print(f"Best weight: {progress['best_weight']:g} kg")
     print(f"Progress: {progress['progress']:+g} kg")
+
+
+def volume_total(group_volume):
+    """Gib das Volumen einer Muskelgruppe für die Sortierung zurück."""
+    return group_volume["volume"]
+
+
+def get_volume_by_muscle_group(exercises, workouts):
+    """Berechne das Gesamtvolumen pro Muskelgruppe für US9."""
+    exercise_groups = {}
+    for exercise in exercises:
+        exercise_groups[exercise["id"]] = exercise["muscle_group"]
+
+    group_volumes = {}
+    for workout in workouts:
+        muscle_group = exercise_groups[workout["exercise_id"]]
+        volume = workout["sets"] * workout["reps"] * workout["weight"]
+
+        if muscle_group not in group_volumes:
+            group_volumes[muscle_group] = 0
+        group_volumes[muscle_group] += volume
+
+    result = []
+    for muscle_group in group_volumes:
+        result.append({
+            "muscle_group": muscle_group,
+            "volume": group_volumes[muscle_group],
+        })
+
+    return sorted(result, key=volume_total, reverse=True)
