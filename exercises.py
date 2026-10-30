@@ -109,3 +109,23 @@ def add_exercise(exercises):
     "muscle_group": muscle_group
     }
     exercises.append(exercise)
+    
+
+def search_exercises(exercises):
+    search_term = input("Search exercise: ")
+
+    if search_term == "":
+        show_exercises(exercises)
+        return
+    
+    found = False
+
+    for exercise in exercises:
+                if search_term.lower() in exercise["name"].lower() or search_term.lower() in exercise["muscle_group"].lower():
+                                 found = True
+                                 print(f'{exercise["muscle_group"]}: {exercise["name"]}')
+                
+    if not found:
+        print("No matches.")
+
+                
