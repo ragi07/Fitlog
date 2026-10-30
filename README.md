@@ -21,6 +21,9 @@ und zeigt die Veränderung mit Vorzeichen. Zwei Einträge sind notwendig.
 Mehrere Einträge am gleichen Tag bleiben in ihrer Erfassungsreihenfolge.
 Die übrigen Fachfunktionen sind noch Platzhalter.
 
+Für US9 ist die Volumenberechnung pro Muskelgruppe vorbereitet und
+getestet. Die Anzeige über Menüpunkt 8 wird noch ergänzt.
+
 Die Statistik verwendet den gemeinsamen Datenbestand mit den Feldern
 `exercises`, `workouts` und `weekly_goal`. Das Menü nimmt diesen Bestand
 als Parameter entgegen: `main(data)`. Ohne übergebene Daten startet es
