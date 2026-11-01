@@ -1,5 +1,5 @@
 """Startgerüst für das FitLog-Menü."""
-from exercises import DEFAULT_EXERCISES, show_exercises
+from exercises import DEFAULT_EXERCISES, show_exercises, add_exercise
 from analytics import show_history, show_progress
 
 MENU_OPTIONS = {
@@ -48,9 +48,10 @@ def main(data=None):
         if choice not in MENU_OPTIONS:
             print("Please enter a number from 0 to 10.")
             continue
-
         if choice == "1":
             show_exercises(data["exercises"])
+        elif choice == "2":
+            add_exercise(data["exercises"])
         elif choice == "6":
             show_history(data)
         elif choice == "7":
