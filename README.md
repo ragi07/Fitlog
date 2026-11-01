@@ -16,6 +16,9 @@ Unter Windows funktioniert alternativ `py main.py`.
 
 Menüpunkt 1 zeigt die Übungen. Menüpunkt 6 zeigt die Trainingshistorie
 und bietet einen Filter für eine einzelne Übung oder alle Übungen.
+Menüpunkt 7 vergleicht das erste, letzte und höchste Gewicht einer Übung
+und zeigt die Veränderung mit Vorzeichen. Zwei Einträge sind notwendig.
+Mehrere Einträge am gleichen Tag bleiben in ihrer Erfassungsreihenfolge.
 Die übrigen Fachfunktionen sind noch Platzhalter.
 
 Die Statistik verwendet den gemeinsamen Datenbestand mit den Feldern

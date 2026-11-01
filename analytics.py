@@ -72,3 +72,42 @@ def show_history(data):
             f"{workout['date']} | {exercise_name} | {workout['sets']} | "
             f"{workout['reps']} | {workout['weight']:g} kg"
         )
+
+
+def get_progress(workouts, exercise_id):
+    """Vergleiche das erste und letzte Gewicht der gewählten Übung."""
+    history = get_history(workouts, exercise_id)
+    if len(history) < 2:
+        return None
+
+    first_weight = history[0]["weight"]
+    last_weight = history[-1]["weight"]
+    best_weight = first_weight
+
+    for workout in history:
+        if workout["weight"] > best_weight:
+            best_weight = workout["weight"]
+
+    return {
+        "first_weight": first_weight,
+        "last_weight": last_weight,
+        "best_weight": best_weight,
+        "progress": last_weight - first_weight,
+    }
+
+
+def show_progress(data):
+    """Zeige die Gewichte und ihre Veränderung für eine einzelne Übung."""
+    exercise_id = select_exercise(data["exercises"])
+    if exercise_id is None:
+        return
+
+    progress = get_progress(data["workouts"], exercise_id)
+    if progress is None:
+        print("Not enough entries (at least 2 needed).")
+        return
+
+    print(f"First weight: {progress['first_weight']:g} kg")
+    print(f"Last weight: {progress['last_weight']:g} kg")
+    print(f"Best weight: {progress['best_weight']:g} kg")
+    print(f"Progress: {progress['progress']:+g} kg")
