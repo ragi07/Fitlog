@@ -1,5 +1,6 @@
 """Startgerüst für das FitLog-Menü."""
 from exercises import DEFAULT_EXERCISES, show_exercises
+from analytics import show_history
 
 MENU_OPTIONS = {
     "1": "Show exercises",
@@ -23,8 +24,19 @@ def show_menu():
         print(f"{number}: {label}")
 
 
-def main():
-    """Starte das Menü; Fachfunktionen werden später eingebunden."""
+def main(data=None):
+    """Starte das Menü mit einem gemeinsamen Datenbestand."""
+    if data is None:
+        exercises = []
+        for exercise in DEFAULT_EXERCISES:
+            exercises.append(exercise.copy())
+        data = {
+            "format": "fitlog-v1",
+            "exercises": exercises,
+            "workouts": [],
+            "weekly_goal": 3,
+        }
+
     while True:
         show_menu()
         choice = input("Choose an option (0-10): ").strip()
@@ -38,7 +50,9 @@ def main():
             continue
 
         if choice == "1":
-            show_exercises(DEFAULT_EXERCISES)
+            show_exercises(data["exercises"])
+        elif choice == "6":
+            show_history(data)
         else:
             print(f"{MENU_OPTIONS[choice]}: not implemented yet.")
 

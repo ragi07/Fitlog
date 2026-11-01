@@ -2,24 +2,39 @@
 
 Python Trainingslogbuch im Modul Grundlagen Programmieren.
 
-## Aktueller Stand
-
-Dieser Branch bereitet das Hauptmenue vor. Die Optionen 1 bis 10 zeigen
-ausdrücklich Platzhalter; mit 0 wird das Programm beendet.
-Es werden noch keine Trainingsdaten verarbeitet oder gespeichert.
-
 ## Starten
 
-Voraussetzung: Python 3.6 oder neuer; keine zusätzlichen Pakete erforderlich.
-Im Projektordner ausführen:
+Python 3 im Projektordner ausführen:
 
 ```bash
 python main.py
 ```
 
-Unter Windows kann alternativ `py main.py` verwendet werden.
+Unter Windows funktioniert alternativ `py main.py`.
 
-## Zuständigkeiten nach den aktuellen User Stories
+## Aktueller Stand
+
+Menüpunkt 1 zeigt die Übungen. Menüpunkt 6 zeigt die Trainingshistorie
+und bietet einen Filter für eine einzelne Übung oder alle Übungen.
+Die übrigen Fachfunktionen sind noch Platzhalter.
+
+Die Statistik verwendet den gemeinsamen Datenbestand mit den Feldern
+`exercises`, `workouts` und `weekly_goal`. Das Menü nimmt diesen Bestand
+als Parameter entgegen: `main(data)`. Ohne übergebene Daten startet es
+mit sechs Übungen und ohne Trainings. Sobald US10 bereit ist, wird
+beim Start der Rückgabewert von `load_data()` übergeben. Dieser Anschluss
+ist noch offen. Die Statistik selbst verändert und speichert keine Daten.
+
+## Tests
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+Die Tests prüfen die fachlichen Ergebnisse und den Menüablauf mit
+vorgegebenen Eingaben. Sie verwenden erfundene Trainingsdaten.
+
+## Zuständigkeiten
 
 | Person | User Stories | Bereich |
 | --- | --- | --- |
@@ -28,18 +43,13 @@ Unter Windows kann alternativ `py main.py` verwendet werden.
 | Raul | US7 bis US9 | Historie, Fortschritt und Volumen pro Muskelgruppe |
 | Patrick | US10 bis US12 | JSON, Wochenziel und CSV-Export |
 
-Raul bereitet zusätzlich die Menüintegration vor.
-Das alte Excel ist keine Grundlage für diese Zuordnung.
+Raul bereitet zusätzlich die Menüintegration vor. Vor Änderungen an
+geteilten Dateien die betroffenen Funktionen miteinander absprechen.
+Jede Person committet ihre eigenen Änderungen. Änderungen werden
+über einen Branch und einen Pull Request gemeinsam geprüft.
 
-## Zusammenarbeit
-
-1. Vor einer neuen Aufgabe den lokalen main aktualisieren.
-2. Einen Branch für eine zusammenhängende Aufgabe erstellen.
-3. Eigene Änderungen entwickeln, prüfen und committen.
-4. Den Branch zu GitHub pushen und einen Pull Request nach main öffnen.
-5. Nach dem Review zusammenführen und den lokalen main aktualisieren.
-
-Änderungen an gemeinsamen Dateien vorher absprechen.
-Jede Person committet ihre eigenen Änderungen.
-Lokale Trainingsdaten in data/ und erzeugte Berichte in reports/
-werden nicht versioniert.
+Das Datenmodell steht in [docs/datenmodell.md](docs/datenmodell.md),
+die Aufgaben in [docs/user_stories.md](docs/user_stories.md).
+Übungs- und Trainings-IDs sind positive ganze Zahlen.
+Persönliche Trainingsdaten unter `data/` und erzeugte Berichte unter
+`reports/` werden nicht versioniert.
