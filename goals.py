@@ -17,3 +17,14 @@ def count_training_days(workouts, monday):
         if monday <= day <= sunday:
             days.add(day)
     return len(days)
+
+
+def count_streak(workouts, goal):
+    """Zählt Wochen in Folge mit erreichtem Ziel (ohne aktuelle Woche)"""
+    # Mit der Vorwoche beginnen und rückwärts zählen
+    monday = week_start(datetime.date.today()) - datetime.timedelta(days=7)
+    streak = 0
+    while count_training_days(workouts, monday) >= goal:
+        streak += 1
+        monday -= datetime.timedelta(days=7)
+    return streak
