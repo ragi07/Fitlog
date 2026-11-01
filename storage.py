@@ -58,11 +58,36 @@ def check_data(data):
         raise ValueError("unknown format")
     if not isinstance(data["exercises"], list) or not isinstance(data["workouts"], list):
         raise ValueError("exercises and workouts must be lists")
-    if data["weekly_goal"] not in range(1, 8):
+    if not is_int(data["weekly_goal"]) or not 1 <= data["weekly_goal"] <= 7:
         raise ValueError("weekly_goal must be between 1 and 7")
-    for exercise in data["exercises"]:
+
+    check_exercises(data["exercises"])
+
+
+def check_exercises(exercises):
+    """Prüft jede Übung und gibt die Liste der Übungs-IDs zurück"""
+    ids = []
+    names = []
+    for exercise in exercises:
+        if not isinstance(exercise, dict):
+            raise ValueError("every exercise must be an object")
+        if not is_int(exercise.get("id")) or exercise["id"] < 1 or exercise["id"] in ids:
+            raise ValueError("every exercise needs a unique positive id")
+        name = exercise.get("name")
+        if not isinstance(name, str) or not 1 <= len(name.strip()) <= 60:
+            raise ValueError("every exercise needs a name with 1-60 characters")
+        if name.lower() in names:
+            raise ValueError("duplicate exercise name: " + name)
         if exercise.get("muscle_group") not in MUSCLE_GROUPS:
             raise ValueError("invalid muscle group")
+        ids.append(exercise["id"])
+        names.append(name.lower())
+    return ids
+
+
+def is_int(value):
+    """True für ganze Zahlen (True/False zählen nicht als Zahl)"""
+    return isinstance(value, int) and not isinstance(value, bool)
 
 
 def next_id(items):
