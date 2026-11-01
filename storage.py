@@ -33,10 +33,10 @@ def load_data():
 
 
 def next_id(items):
-    """Vergibt neue id, Letzte ID + 1"""
+    """Vergibt neue id, höchste vorhandene ID + 1"""
     # Leere Liste --> Erste ID = 1
     if len(items) == 0:
         return 1
-    return items[-1]["id"] + 1
+    return max(item["id"] for item in items) + 1
 
 
