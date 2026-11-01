@@ -95,11 +95,13 @@ def add_exercise(exercises):
     print("5: Arms")
     print("6: Core")
 
-    muscle_choice = input("Choose a muscle group (1-6): ")
+    while True:
+        muscle_choice = input("Choose a muscle group (1-6): ")
 
-    if muscle_choice not in ["1", "2", "3", "4", "5", "6"]:
+        if muscle_choice in ["1", "2", "3", "4", "5", "6"]:
+            break
+
         print("Please choose a number from 1 to 6.")
-        return
     
     muscle_group = MUSCLE_GROUPS[int(muscle_choice) - 1]
 
