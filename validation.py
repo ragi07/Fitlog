@@ -41,7 +41,7 @@ def read_int(prompt, min_value, max_value):
         except ValueError:
 
             # Erklärt dem User, was erlaubt ist.
-            print(f"Invalid input! Please enter a whole number"
+            print(f"Invalid input! Please enter a whole number "
                   f"from {min_value} to {max_value}.")
 
             # Springt wieder zurück an den Anfang: die Frage wird wiederholt
@@ -98,7 +98,7 @@ def read_weight(prompt):
         except ValueError:
 
             # Erklärt welche Eingabe erwartet wird
-            print("Invalid weight. Please enter a number of at least 0.")
+            print("Invalid weight! Please enter a number of at least 0.")
 
             # Nochmals fragen
             continue
@@ -108,7 +108,7 @@ def read_weight(prompt):
         if not math.isfinite(weight):
 
             # Erklärt den Fehler
-            print("Invalid weight. Please enter a normal number, "
+            print("Invalid weight! Please enter a normal number, "
                   "not 'inf' or 'nan'.")
 
             # Nochmals fragen
@@ -119,7 +119,7 @@ def read_weight(prompt):
         if weight < 0:
 
             # Erklärt den Fehler
-            print("Invalid weight. The weight must be at least 0 kg.")
+            print("Invalid weight! The weight must be at least 0 kg.")
 
             # Nochmals fragen
             continue
@@ -181,7 +181,7 @@ def read_date(prompt):
             return text
 
         # Weder leer noch gültig: Fehlermeldung, fragt nochmals
-        print("Invalid date. Please use the format YYYY-MM-DD " \
+        print("Invalid date! Please use the format YYYY-MM-DD " \
         "with a real calendar day.")
 
 
@@ -208,4 +208,4 @@ def read_yes_no(prompt):
             return False
 
         # Alles andere ist ungültig, Fehlermeldung, dann fragt nochmals
-        print("Invalid answer. Please enter y (yes) or n (no).")
+        print("Invalid answer! Please enter y (yes) or n (no).")
