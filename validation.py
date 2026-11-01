@@ -52,7 +52,7 @@ def read_int(prompt, min_value, max_value):
 
             # Gleiche Fehlermeldung wie oben,
             # damit der Benutzer den erlaubten Bereich sieht
-            print(f"Invalid input! Please enter a whole number."
+            print(f"Invalid input! Please enter a whole number "
                   f"from {min_value} to {max_value}.")
 
             # Zurück an den Anfang: nochmals fragen
