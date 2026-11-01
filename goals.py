@@ -1,5 +1,8 @@
 import datetime
 
+from storage import save_data
+from validation import read_int, read_yes_no
+
 
 def week_start(day):
     """Gibt den Montag der Woche zurück"""
@@ -28,3 +31,23 @@ def count_streak(workouts, goal):
         streak += 1
         monday -= datetime.timedelta(days=7)
     return streak
+
+
+def weekly_goal_menu(data):
+    """Menüpunkt 9: Wochenziel anzeigen und optional ändern"""
+    goal = data["weekly_goal"]
+    days = count_training_days(data["workouts"], week_start(datetime.date.today()))
+    print(f"Training days this week: {days} of {goal}")
+    print(f"Streak: {count_streak(data['workouts'], goal)} week(s) in a row")
+
+    if read_yes_no("Change weekly goal? (y/n): "):
+        new_goal = read_int("New weekly goal (1-7): ", 1, 7)
+        if read_yes_no(f"Change weekly goal to {new_goal}? (y/n): "):
+            data["weekly_goal"] = new_goal
+            try:
+                save_data(data)
+                print("Weekly goal saved.")
+            except OSError:
+                # Speichern fehlgeschlagen --> altes Ziel behalten
+                data["weekly_goal"] = goal
+                print("Error: weekly goal could not be saved.")
