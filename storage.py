@@ -1,3 +1,4 @@
+import datetime
 import json
 import os
 from exercises import DEFAULT_EXERCISES
@@ -61,7 +62,8 @@ def check_data(data):
     if not is_int(data["weekly_goal"]) or not 1 <= data["weekly_goal"] <= 7:
         raise ValueError("weekly_goal must be between 1 and 7")
 
-    check_exercises(data["exercises"])
+    exercise_ids = check_exercises(data["exercises"])
+    check_workouts(data["workouts"], exercise_ids)
 
 
 def check_exercises(exercises):
@@ -85,9 +87,46 @@ def check_exercises(exercises):
     return ids
 
 
+def check_workouts(workouts, exercise_ids):
+    """Prüft jedes Training, auch ob die Übung existiert"""
+    ids = []
+    for workout in workouts:
+        if not isinstance(workout, dict):
+            raise ValueError("every workout must be an object")
+        if not is_int(workout.get("id")) or workout["id"] < 1 or workout["id"] in ids:
+            raise ValueError("every workout needs a unique positive id")
+        if not is_int(workout.get("exercise_id")) or workout["exercise_id"] not in exercise_ids:
+            raise ValueError("workout refers to an unknown exercise")
+        if not is_valid_date(workout.get("date")):
+            raise ValueError("date must be a real date in the format YYYY-MM-DD")
+        if not is_int(workout.get("sets")) or not 1 <= workout["sets"] <= 20:
+            raise ValueError("sets must be between 1 and 20")
+        if not is_int(workout.get("reps")) or not 1 <= workout["reps"] <= 100:
+            raise ValueError("reps must be between 1 and 100")
+        weight = workout.get("weight")
+        # NaN und unendlich sind keine gültigen Gewichte
+        if not is_number(weight) or not 0 <= weight < float("inf"):
+            raise ValueError("weight must be a number of at least 0")
+        ids.append(workout["id"])
+
+
 def is_int(value):
     """True für ganze Zahlen (True/False zählen nicht als Zahl)"""
     return isinstance(value, int) and not isinstance(value, bool)
+
+
+def is_number(value):
+    """True für ganze Zahlen und Kommazahlen (True/False zählen nicht)"""
+    return isinstance(value, (int, float)) and not isinstance(value, bool)
+
+
+def is_valid_date(text):
+    """True, wenn text ein echtes Datum im Format YYYY-MM-DD ist"""
+    try:
+        # Umwandeln und zurück: nur das exakte Format YYYY-MM-DD bleibt gleich
+        return datetime.date.fromisoformat(text).isoformat() == text
+    except (TypeError, ValueError):
+        return False
 
 
 def next_id(items):
