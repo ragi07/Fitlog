@@ -26,6 +26,7 @@ def load_data():
     # Beim ersten Start, Startdaten anlegen und speichern
     if not os.path.exists(DATA_FILE):
         data = {
+            "format": "fitlog-v1",
             "exercises": DEFAULT_EXERCISES,
             "workouts": [],
             "weekly_goal": 3,
@@ -49,10 +50,12 @@ def check_data(data):
     """Prüft, ob die geladenen Daten gültig sind"""
     if not isinstance(data, dict):
         raise ValueError("data must be a JSON object")
-    # Alle drei Felder müssen vorhanden sein
-    for key in ["exercises", "workouts", "weekly_goal"]:
+    # Alle Hauptfelder müssen vorhanden sein
+    for key in ["format", "exercises", "workouts", "weekly_goal"]:
         if key not in data:
             raise ValueError("missing field: " + key)
+    if data["format"] != "fitlog-v1":
+        raise ValueError("unknown format")
     if not isinstance(data["exercises"], list) or not isinstance(data["workouts"], list):
         raise ValueError("exercises and workouts must be lists")
     if data["weekly_goal"] not in range(1, 8):
