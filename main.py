@@ -1,5 +1,5 @@
 """Startgerüst für das FitLog-Menü."""
-from exercises import DEFAULT_EXERCISES, show_exercises
+from exercises import DEFAULT_EXERCISES, show_exercises, add_exercise
 
 MENU_OPTIONS = {
     "1": "Show exercises",
@@ -39,6 +39,8 @@ def main():
 
         if choice == "1":
             show_exercises(DEFAULT_EXERCISES)
+        elif choice == "2":
+            add_exercise(DEFAULT_EXERCISES)
         else:
             print(f"{MENU_OPTIONS[choice]}: not implemented yet.")
 
