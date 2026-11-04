@@ -46,19 +46,19 @@ def next_workout_id(workouts):
         # holt die ID des Trainings
         workout_id = workout["id"]
         # nur die IDs, die mit "w" beginnen
-        if workout_id[":1"] == "w":
-        # Versucht den Rest nach dem W in eine Zahl umuzwandeln
-        try:
-            # (1:) alles ab dem zweite Zeichen
-            number = int(workout_id[1:])
+        if workout_id[:1] == "w":
+            # Versucht den Rest nach dem W in eine Zahl umuzwandeln
+            try:
+                # (1:) alles ab dem zweite Zeichen
+                number = int(workout_id[1:])
             # ist der Rest keine Zahl, wird diese mit ID übersprungen
-        except ValueError:
-            # Weiter mit dem nächsten Training
-            continue
-        # Ist diese Nummer grösser als die bisher höchste?
-        if number > highest:
-            # Neue höchste Nummer merken
-            highest = number
+            except ValueError:
+                # Weiter mit dem nächsten Training
+                continue
+            # Ist diese Nummer grösser als die bisher höchste?
+            if number > highest:
+                # Neue höchste Nummer merken
+                highest = number
     # Neue ID aus "w" und der nächsten Nummer 
     return "w" + str(highest + 1)
 
@@ -73,6 +73,83 @@ def show_exercise_choices(exercises):
         # Holt die Übung an Position i
         exercise = exercises[i]
         # Gibt die Nummer (i + 1), Name und Gruppe aus
-        print(f"(i + 1). (exercise('name') "
-              f" ((exercise('muscle_group')))")
+        print(f"{i + 1}. {exercise['name']} "
+              f" ({exercise['muscle_group']})")
 
+
+# Definiert log_workout: bekommt Übungsliste und Trainingsliste
+def log_workout(exercises, workouts):
+    # US4: Fragt alle Werte ab und hängt EINEN gültigen Eintrag an
+    # Gibt den neuen Eintrag zurück (oder None, wenn es keine Übung gibt)
+    # Gibt es noch keine Übung? Länge der Liste ist 0
+    if len(exercises) == 0:
+        # Hinweis laut US4: zuerst eine Übung hinzufügen
+        print("No exercises available. " 
+        "Please add an exercise first (menu option 2).")
+        # Funktion beenden, nichts gespeichert. None = "Kein Ergebnis"
+        return None
+    
+    # Fragt das Datum ab (validation.py prüft es): leer = heute
+    date = validation.read_date("Date (YYYY-MM-DD, empty = today): ")
+
+    # Zeigt die Übung nummeriert an
+    show_exercise_choices(exercises)
+    # Fragt die Nummer der übung ab: erlaubt ist 1 bis Anzahl Übungen
+    number = validation.read_int(
+        f"Exercise number (1-{len(exercises)}): ",
+        1,
+        len(exercises),
+    )
+    # Holt die gewähle Übung: Nummer 1 steht an Position 0
+    exercise = exercises[number - 1]
+
+    # Fragt die Sätze ab(ganze Zahl von 1 - 20)
+    sets = validation.read_int(
+        f"Sets ({MIN_SETS}-{MAX_SETS}): ",
+        MIN_SETS,
+        MAX_SETS,
+    )
+
+    # Fragt die Wiederholungen ab (ganze Zahl, von 1 - 100)
+    reps = validation.read_int(
+        f"Repetitions ({MIN_REPS}-{MAX_REPS}): ",
+        MIN_REPS,
+        MAX_REPS,
+    )
+    # Fragt das Gewicht ab (Zahl ab 0)
+    weight = validation.read_weight("Weight in kg (0 = bodyweight): ")
+
+    # Erst hier sind alle Werte geprüft: Eintrag jetzt erstellen
+    # Baut ein Dictionary in gemeinsamen Format vom Team
+    workout = {
+        # Neue, eindeutige ID des Trainings z.B. "W6"
+        "id": next_workout_id(workouts),
+        # ID der gewählten Übung z.B. "ex-bench"
+        "exercise_id": exercise["id"],
+        # Datum als Text
+        "date": date,
+        # Anzahl Sätze
+        "sets": sets,
+        # Anzahl Wiederholungen
+        "reps": reps,
+        # Gewicht in kg
+        "weight": weight,
+    }
+    # Hängt genau diesen Eintrag ans Ende der Liste an
+    workouts.append(workout)
+
+    # Bestätigung US4: alle Werte anzeigen
+    print("Workout saved:")
+    # Datum anzeigen
+    print(f" Date:   {workout['date']}")
+    # Übung mit Muskelgruppe anzeigen
+    print(f" Exercise:   {exercise['name']}" 
+          f" ({exercise['muscle_group']})")
+    # Sätze anzeigen
+    print(f" Sets:   {workout['sets']}")
+    # Wiederholungen anzeigen
+    print(f" Repetitions:   {workout['reps']}")
+    # Gewicht anzeigen
+    print(f" Weight:   {workout['weight']} kg")
+    #Gibt den neuen Eintrag zurück, damit main.py speichern kann
+    return workout
