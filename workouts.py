@@ -1,5 +1,7 @@
 # Das Modul erfasst neue Trainingseinträge (US4)
+# und löscht falsch erfasste Einträge (US6)
 # Ein Eintrag wird erst gespeichert, wenn alle Eingaben gültig sind.
+# Bzw. das Löschen mit y bestätigt wurde
 
 # Lädt validation.py (US5) mit den Prüffunktionen hoch
 import validation
@@ -153,3 +155,90 @@ def log_workout(exercises, workouts):
     print(f" Weight:   {workout['weight']} kg")
     #Gibt den neuen Eintrag zurück, damit main.py speichern kann
     return workout
+
+# Definiert find_exercise: bekommt Übungsliste und eine Übungs-ID
+def find_exercise(exercises, exercise_id):
+    # Gibt die Übung mit dieser ID zurück, oder None, wenn es sie nicht gibt
+    # Läuft über jede Übung in der Liste
+    for exercise in exercises:
+        # Hat diese übung die gesuchte ID?
+        if exercise["id"] == exercise_id:
+            #Gefunden: Übung zurückgeben (Schleife beendet)
+            return exercise
+    # Schleife ist durchgelaufen, ohne etwas zu finden
+    return None
+
+
+# Definiert format_workout; bekommt ein Training und die Übungsliste
+def format_workout(workout, exercises):
+    # Baut aus einem Trainingseintrag eine lesbare Zeile 
+    # Sucht die passende Übung über ihre ID
+    exercise = find_exercise(exercises, workout["exercise_id"])
+    # Keine Übung gefunden?
+    if exercise is None:
+        # Dann zeigen wir wenigstens die ID an
+        name = workout["exercise_id"]
+    # Sonst wurde die übung gefunden
+    else:
+        # Dann zeigen wir ihren Namen an
+        name = exercise["name"]
+    # Setzt die Zeile mit f-strings zusammen: die KLammer () erlaubt
+    # den Text auf zwei Zeilen zu verteilen
+    return(f"{workout['date']} | {name} | "
+           f"{workout['sets']} sets x {workout['reps']} reps | "
+           f"{workout['weight']} kg")
+
+
+# Definiert delete_workout: bekommt Übungsliste und Trainingsliste
+def delete_workout(exercises, workouts):
+    # US6 zeigt alle Trainings nummeriert an und löscht genau
+    # den gewählten Eintrag, aber nur nach Besätitigung mti y
+    # Gibt den gelöschten Eintrag zurück oder None -> Übungen bleiben
+    # Gibt es gar keine Trainings?
+    if len(workouts) == 0:
+        #Meldung US6
+        print("No workouts to delete.")
+        # Funktion beenden, nichts gelöscht
+        return None
+    # Überschrift aufgeben 
+    print("Workouts:")
+    # Läuft über alle Positionen der Liste
+    for i in range(len(workouts)):
+        # Gibt Nummer ab 1 und das Training als lesbare Zeile aus
+        print(f" {i +1}. {format_workout(workouts[i], exercises)}")
+    
+    # Fragt die Nummer ab : 0 ist auch erlaubt und heisst Abbruch
+    number = validation.read_int(
+        f"Number of the workout to delete "
+        f"(1-{len(workouts)}, 0 = cancel): ",
+        0,
+        len(workouts),
+    )
+    # Hat der User 0 eingegeben?
+    if number == 0:
+        #Abbruch melden
+        print("Cancelled. Nothing was deleted.")
+        # Funktion beenden, nichts gelöscht
+        return None
+
+    # Holt das gewählte Training (Nr 1 = Position 0), noch ohne Löschen
+    selected = workouts[number - 1]
+    # Fragt nach Bestätigung: True = y / False = n
+    confirmed = validation.read_yes_no(
+        f"Delete '{format_workout(selected, exercises)}'? (y/n): "
+    )
+    # Wurde mit n geantwortet?
+    if not confirmed:
+        # Abbruch melden
+        print("Cancelled. Nothing was deleted.")
+        # Funktion beenden, nichts gelöscht
+        return None
+
+    # Entfernt genau diesen Eintrag aus der Liste
+    deleted = workouts.pop(number - 1)
+    # Erfolg melden
+    print("Workout deleted.")
+    # Gibt den gelöschten Eintrag zurück, damit main.py speichern kann
+    return deleted
+
+
