@@ -69,5 +69,17 @@ def export_weekly_report(data, today=None):
         print("Could not write the report. Is the file open in Excel?")
         return None
 
+    if len(rows) == 0:
+        print("No workouts this week. The file only contains the header row.")
+
+    # Zusammenfassung nach dem Export
+    training_days = count_training_days(data["workouts"], monday)
+    goal = data["weekly_goal"]
     print(f"Report saved: {path}")
+    print(f"Training days: {training_days}")
+    print(f"Total volume: {total_volume} kg")
+    if training_days >= goal:
+        print(f"Weekly goal ({goal} days): reached")
+    else:
+        print(f"Weekly goal ({goal} days): not reached")
     return path
