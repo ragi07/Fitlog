@@ -92,7 +92,12 @@ class HistoryTests(unittest.TestCase):
         self.assertEqual(self.data, before)
 
     def test_default_menu_and_loaded_catalogue(self):
-        self.assertIn("No workouts available.", capture(main, ["6", "0"]))
+        empty_data = create_test_data()
+        empty_data["workouts"] = []
+        with patch("main.load_data", return_value=empty_data):
+            self.assertIn(
+                "No workouts available.", capture(main, ["6", "0"])
+            )
         self.data["exercises"][0]["name"] = "Loaded exercise"
         output = capture(main, ["1", "0"], self.data)
         self.assertIn("Loaded exercise", output)
@@ -101,3 +106,4 @@ class HistoryTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
