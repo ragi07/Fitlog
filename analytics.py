@@ -141,3 +141,18 @@ def get_volume_by_muscle_group(exercises, workouts):
         })
 
     return sorted(result, key=volume_total, reverse=True)
+
+
+def show_volume(data):
+    """Zeige die Gruppensummen, ohne Trainingsdaten zu verändern."""
+    if not data["workouts"]:
+        print("No workouts available.")
+        return
+
+    volumes = get_volume_by_muscle_group(
+        data["exercises"], data["workouts"]
+    )
+    print("Muscle group | Volume (sets x reps x kg)")
+    for group in volumes:
+        print(f"{group['muscle_group']}: {group['volume']:g}")
+
