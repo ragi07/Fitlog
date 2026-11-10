@@ -77,16 +77,19 @@ def exercise_exists(exercises, name):
     return False
 
 def add_exercise(exercises):
-    name = input("Exercise name: ")
-    name = clean_exercise_name(name)
+    while True:
+        name = input("Exercise name: ")
+        name = clean_exercise_name(name)
 
-    if name is None:
-        print("Invalid exercise name.")
-        return
+        if name is None:
+            print("Invalid exercise name.")
+            continue
 
-    if exercise_exists(exercises, name):
-        print("Exercise already exists.")
-        return
+        if exercise_exists(exercises, name):
+            print("Exercise already exists.")
+            continue
+
+        break
 
     print("1: Chest")
     print("2: Back")
@@ -102,12 +105,15 @@ def add_exercise(exercises):
             break
 
         print("Please choose a number from 1 to 6.")
-    
+
     muscle_group = MUSCLE_GROUPS[int(muscle_choice) - 1]
 
+    from storage import next_id
+
     exercise = {
-    "id": len(exercises) + 1,
-    "name": name,
-    "muscle_group": muscle_group
+        "id": next_id(exercises),
+        "name": name,
+        "muscle_group": muscle_group
     }
+
     exercises.append(exercise)
