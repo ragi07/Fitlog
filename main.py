@@ -1,6 +1,10 @@
-"""Startgerüst für das FitLog-Menü."""
-from exercises import DEFAULT_EXERCISES, show_exercises, add_exercise
-from analytics import show_history, show_progress
+"""Hauptmenü für FitLog mit einem gemeinsamen Datenbestand."""
+from exercises import show_exercises, add_exercise
+from analytics import show_history, show_progress, show_volume
+from goals import weekly_goal_menu
+from report import export_weekly_report
+from storage import load_data
+from validation import read_menu_choice
 
 MENU_OPTIONS = {
     "1": "Show exercises",
@@ -27,19 +31,15 @@ def show_menu():
 def main(data=None):
     """Starte das Menü mit einem gemeinsamen Datenbestand."""
     if data is None:
-        exercises = []
-        for exercise in DEFAULT_EXERCISES:
-            exercises.append(exercise.copy())
-        data = {
-            "format": "fitlog-v1",
-            "exercises": exercises,
-            "workouts": [],
-            "weekly_goal": 3,
-        }
+        try:
+            data = load_data()
+        except OSError as error:
+            print(f"Could not load the training data: {error}")
+            return
 
     while True:
         show_menu()
-        choice = input("Choose an option (0-10): ").strip()
+        choice = str(read_menu_choice())
 
         if choice == "0":
             print("Goodbye!")
@@ -56,9 +56,16 @@ def main(data=None):
             show_history(data)
         elif choice == "7":
             show_progress(data)
+        elif choice == "8":
+            show_volume(data)
+        elif choice == "9":
+            weekly_goal_menu(data)
+        elif choice == "10":
+            export_weekly_report(data)
         else:
             print(f"{MENU_OPTIONS[choice]}: not implemented yet.")
 
 
 if __name__ == "__main__":
     main()
+
