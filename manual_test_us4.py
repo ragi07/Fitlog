@@ -16,8 +16,8 @@ exercises = [
 
 # Ein schon gespeichertes Training, damit die neue ID w2 sein muss
 stored = [
-    # Training w1 mit Bench Press
-    {"id": "w1", "exercise_id": "ex-bench", "date": "2026-11-04",
+    # Training 1 mit Bench Press
+    {"id": 1, "exercise_id": "ex-bench", "date": "2026-11-04",
      "sets": 3, "reps": 10, "weight": 40},
 ]
 
@@ -36,3 +36,18 @@ print("Neuer Eintrag", stored[-1])
 print("Test 2: Keine Übungen vorhanden")
 # Ruft die Funktion mit leeren Listen auf
 workouts.log_workout([], [])
+
+# Überschrift für Test 3
+print("Test 3: Vorhandene IDs 3, 1, 2 (erwartet: 4)")
+# Die Funktion liest nur "id", deshalb reichen kurze Dictionaries
+print("Neue ID:", workouts.next_workout_id([{"id": 3}, {"id": 1}, {"id": 2}]))
+
+# Überschrift für Test 4
+print("Test 4: Nach dem Löschen von ID 2, übrig 3 und 1 (erwartet: 4)")
+# ID 2 fehlt jetzt; die neue ID darf keine vorhandene sein
+print("Neue ID:", workouts.next_workout_id([{"id": 3}, {"id": 1}]))
+
+# Überschrift für Test 5
+print("Test 5: Leere Liste (erwartet: 1)")
+# Noch keine Trainings: Die erste ID muss 1 sein
+print("Neue ID:", workouts.next_workout_id([]))
