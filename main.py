@@ -1,5 +1,5 @@
 """Hauptmenü für FitLog mit einem gemeinsamen Datenbestand."""
-from exercises import show_exercises
+from exercises import show_exercises, add_exercise
 from analytics import show_history, show_progress, show_volume
 from goals import weekly_goal_menu
 from report import export_weekly_report
@@ -45,8 +45,13 @@ def main(data=None):
             print("Goodbye!")
             return
 
+        if choice not in MENU_OPTIONS:
+            print("Please enter a number from 0 to 10.")
+            continue
         if choice == "1":
             show_exercises(data["exercises"])
+        elif choice == "2":
+            add_exercise(data["exercises"])
         elif choice == "6":
             show_history(data)
         elif choice == "7":
