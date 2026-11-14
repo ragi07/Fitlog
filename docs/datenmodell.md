@@ -27,7 +27,7 @@ Es wird nicht automatisch als persönlicher Datenbestand geladen.
 
 | Feld | JSON-Typ | Regel | Verwendet von |
 | --- | --- | --- | --- |
-| `id` | string | Nicht leer, innerhalb der Übungen eindeutig und dauerhaft stabil | Alle Bereiche |
+| `id` | integer | Positive ganze Zahl, innerhalb der Übungen eindeutig und stabil | Alle Bereiche |
 | `name` | string | Nach Bereinigung 1 bis 60 Zeichen; Namen ohne Beachtung der Gross-/Kleinschreibung eindeutig | Rudina; Anzeige und Export |
 | `muscle_group` | string | Genau einer der sechs Werte unten | Rudina; Raul US9; Patrick US12 |
 
@@ -36,9 +36,12 @@ Zulässige Muskelgruppen: `Chest`, `Back`, `Legs`, `Shoulders`,
 
 Führende und folgende Leerzeichen im Namen werden entfernt;
 mehrere aufeinanderfolgende Leerzeichen werden zu einem.
-Die ID wird beim Anlegen einmal erzeugt, beispielsweise mit
-`uuid.uuid4().hex`. Sie hängt nicht von der sichtbaren Auswahlposition ab.
-Die kurzen IDs der Beispieldatei dienen nur der Lesbarkeit.
+Die ID wird beim Anlegen einmal vergeben: höchste vorhandene ID + 1,
+bei einer leeren Liste 1. Die Listenreihenfolge und sichtbare
+Auswahlposition bestimmen die ID nicht. Vorhandene IDs bleiben beim
+Sortieren und Laden unverändert. Übungen und Trainings verwenden
+jeweils ihren eigenen ID-Bereich. Diese numerische Variante passt
+zu den bereits vorhandenen Startübungen.
 
 Beim ersten Start werden sechs Übungen angelegt, eine pro Muskelgruppe.
 Vorgeschlagene Namen stehen in der Beispieldatei. Der konkrete
@@ -48,8 +51,8 @@ Startkatalog ist eine gemeinsame Detailentscheidung.
 
 | Feld | JSON-Typ | Regel | Verwendet von |
 | --- | --- | --- | --- |
-| `id` | string | Nicht leer, innerhalb der Einträge eindeutig und dauerhaft stabil | Sema US6 |
-| `exercise_id` | string | Verweist auf eine vorhandene Übung | Sema; Raul; Patrick |
+| `id` | integer | Positive ganze Zahl, innerhalb der Einträge eindeutig und stabil | Sema US6 |
+| `exercise_id` | integer | Verweist auf eine vorhandene Übung | Sema; Raul; Patrick |
 | `date` | string | Gültiges Kalenderdatum als `YYYY-MM-DD` | Historie; Fortschritt; Woche |
 | `sets` | integer | 1 bis 20 | Volumenberechnung |
 | `reps` | integer | 1 bis 100; Wiederholungen pro Satz | Volumenberechnung |
