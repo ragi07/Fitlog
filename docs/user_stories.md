@@ -1,7 +1,8 @@
 # User Stories und Verantwortlichkeiten
 
 Grundlage: aktuelle Datei „FitLog - User Stories.docx“.
-Alle Issues sind offen; die Anlage eines Issues bedeutet keine Umsetzung.
+Der aktuelle Stand und die Abnahme stehen im jeweiligen Issue.
+Ein angelegtes Issue bedeutet noch keine fertige Umsetzung.
 
 | User Story | Aufgabe | Verantwortlich | GitHub-Issue |
 | --- | --- | --- | --- |
@@ -21,10 +22,10 @@ Alle Issues sind offen; die Anlage eines Issues bedeutet keine Umsetzung.
 Story-Sätze und sämtliche Akzeptanzkriterien stehen als Checklisten
 im jeweiligen Issue. Änderungen am Umfang dort gemeinsam festhalten.
 
-Rauls US7 bis US9 sind `ragi07` zugewiesen. Die GitHub-Namen von Rudina,
-Sema und Patrick sind noch nicht verifiziert; ihre fachliche Verantwortung
-steht im jeweiligen Issue. Die GitHub-Assignees können ergänzt werden,
-sobald die Accounts eindeutig bekannt und berechtigt sind.
+Die GitHub-Accounts sind `rudinashabanifhnw`, `semayilmazfhnw`,
+`ragi07` und `paddykaelin00-lgtm`. Raul koordiniert Reviews und Integration.
+Die Verantwortung für die eigenen drei Stories bleibt bei jeder Person.
 
 Der Vorschlag für gemeinsame Felder und Regeln steht in
 [datenmodell.md](datenmodell.md).
+

@@ -222,3 +222,6 @@ __marimo__/
 # FitLog: local training data and generated reports
 /data/
 /reports/
+__pycache__/
+.DS_Store
+.Rhistory
