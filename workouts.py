@@ -4,46 +4,46 @@
 # Lädt validation.py (US5) mit den Prüffunktionen hoch
 import validation
 
-# Gemeinsame Datenstruktur des Teams (fitlog.sample.json -> "fitlog-v1")
+# Gemeinsame Datenstruktur des Teams (siehe docs/datenmodell.md)
 
-# Übung:       ("id": "ex-bench", "name": " Bench Press", 
-#             "muscle group": "chest")
+# Übung:    {"id": 1, "name": "Bench Press",
+#            "muscle_group": "Chest"}
 
-# id -> "ex-bench" -> Eindeutige Kennung der Übung, wie eine Ausweisnummer
-# name -> "Bench Press" -> Der Name, den der User sieht
+# id -> 1 -> eindeutige Nummer der Übung (Zahl)
+# name -> "Bench Press" -> der Name, den der User sieht
 # muscle_group -> "Chest" -> die trainierte Muskelgruppe
 
 
-# Training:     ("id": "1", "exercise_id": "ex-bench", "date": "2026-11-02", 
-#               "sets:": 3, "reps": 10, "weight": 40)
+# Training: {"id": 1, "exercise_id": 1, "date": "2026-11-02",
+#            "sets": 3, "reps": 10, "weight": 40}
 
-# id -> "1" -> eindeutige Nummer des Trainings (w steht für Workout)
-# exercise_id -> "ex-bench" -> Welche Übung trainiert wurde
+# id -> 1 -> eindeutige Nummer des Trainings (Zahl)
+# exercise_id -> 1 -> Nummer der Übung, die trainiert wurde
 # date -> "2026-11-02" -> Datum als Text
-# sets -> "3" -> Anzahl Sätze
-# reps -> "10" -> Wiederholungen pro Satz 
-# weight -> "40" -> Gewicht in kg
+# sets -> 3 -> Anzahl Sätze
+# reps -> 10 -> Wiederholungen pro Satz
+# weight -> 40 -> Gewicht in kg
 
 
-# Kleinste erlaubte Anzahl Sätze 
+# Kleinste erlaubte Anzahl Sätze
 MIN_SETS = 1
-# Grösste erlaubte Anzahl Sätze 
+# Grösste erlaubte Anzahl Sätze
 MAX_SETS = 20
-# Kleinste erlaubte Anzahl an Wiederholungen 
+# Kleinste erlaubte Anzahl an Wiederholungen
 MIN_REPS = 1
-# Grösste erlaubte Anzahl Wiederholungen 
+# Grösste erlaubte Anzahl Wiederholungen
 MAX_REPS = 100
 
 
-# Defiiert next_workout_id: bekommt die Liste aller Trainings
+# Definiert next_workout_id: bekommt die Liste aller Trainings
 def next_workout_id(workouts):
-    # Erzeugt eine neue ID wie "6": höchstens vorhandene Nummer + 1
+    # Erzeugt eine neue ID wie 6: höchstens vorhandene Nummer + 1
     # (Anzahl +1 ergäbe nach einem Löschen schon eine vorhandene ID)
-    # Startwert: noch keine Nummer gefunden 
-    highest = 0 
+    # Startwert: noch keine Nummer gefunden
+    highest = 0
     # läuft über jedes Training in der Liste
     for workout in workouts:
-        # holt die ID des Trainings
+        # Ist die ID dieses Trainings grösser als die bisher höchste?
         if workout["id"] > highest:
             # Neue höchste ID merken
             highest = workout["id"]
@@ -56,13 +56,13 @@ def show_exercise_choices(exercises):
     # Zeigt alle Übungen mit einer Nummer ab 1 an
     # Überschrift ausgeben
     print("Exercises:")
-    # Läuft über alle Positionen 0, 1, 2, ... der Liste 
+    # Läuft über alle Positionen 0, 1, 2, ... der Liste
     for i in range(len(exercises)):
         # Holt die Übung an Position i
         exercise = exercises[i]
         # Gibt die Nummer (i + 1), Name und Gruppe aus
         print(f"{i + 1}. {exercise['name']} "
-              f" ({exercise['muscle_group']})")
+              f"({exercise['muscle_group']})")
 
 
 # Definiert log_workout: bekommt Übungsliste und Trainingsliste
@@ -72,11 +72,11 @@ def log_workout(exercises, workouts):
     # Gibt es noch keine Übung? Länge der Liste ist 0
     if len(exercises) == 0:
         # Hinweis laut US4: zuerst eine Übung hinzufügen
-        print("No exercises available. " 
-        "Please add an exercise first (menu option 2).")
+        print("No exercises available. "
+              "Please add an exercise first (menu option 2).")
         # Funktion beenden, nichts gespeichert. None = "Kein Ergebnis"
         return None
-    
+
     # Fragt das Datum ab (validation.py prüft es): leer = heute
     date = validation.read_date("Date (YYYY-MM-DD, empty = today): ")
 
@@ -110,9 +110,9 @@ def log_workout(exercises, workouts):
     # Erst hier sind alle Werte geprüft: Eintrag jetzt erstellen
     # Baut ein Dictionary in gemeinsamen Format vom Team
     workout = {
-        # Neue, eindeutige ID des Trainings z.B. "6"
+        # Neue, eindeutige ID des Trainings z.B. 6
         "id": next_workout_id(workouts),
-        # ID der gewählten Übung z.B. "ex-bench"
+        # ID der gewählten Übung z.B. 1
         "exercise_id": exercise["id"],
         # Datum als Text
         "date": date,
@@ -131,7 +131,7 @@ def log_workout(exercises, workouts):
     # Datum anzeigen
     print(f" Date:   {workout['date']}")
     # Übung mit Muskelgruppe anzeigen
-    print(f" Exercise:   {exercise['name']}" 
+    print(f" Exercise:   {exercise['name']}"
           f" ({exercise['muscle_group']})")
     # Sätze anzeigen
     print(f" Sets:   {workout['sets']}")
@@ -139,5 +139,5 @@ def log_workout(exercises, workouts):
     print(f" Repetitions:   {workout['reps']}")
     # Gewicht anzeigen
     print(f" Weight:   {workout['weight']} kg")
-    #Gibt den neuen Eintrag zurück, damit main.py speichern kann
+    # Gibt den neuen Eintrag zurück, damit main.py speichern kann
     return workout
