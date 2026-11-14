@@ -14,7 +14,7 @@ exercises = [
     {"id": "ex-crunch", "name": "Crunch", "muscle_group": "Core"},
 ]
 
-# Ein schon gespeichertes Training, damit die neue ID w2 sein muss
+# Ein schon gespeichertes Training, damit die neue ID 2 sein muss
 stored = [
     # Training 1 mit Bench Press
     {"id": 1, "exercise_id": "ex-bench", "date": "2026-11-04",
