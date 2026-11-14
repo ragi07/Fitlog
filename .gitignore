@@ -218,3 +218,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# FitLog: local training data and generated reports
+/data/
+/reports/
+__pycache__/
+.DS_Store
+.Rhistory

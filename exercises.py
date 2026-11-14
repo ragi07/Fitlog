@@ -1,0 +1,119 @@
+DEFAULT_EXERCISES = [
+    {
+        "id": 1,
+        "name": "Bench Press",
+        "muscle_group": "Chest"
+    },            
+        {
+        "id": 2,
+        "name": "Pull Up",
+        "muscle_group": "Back"
+    },
+    {
+        "id": 3,
+        "name": "Squat",
+        "muscle_group": "Legs"
+    },
+    {
+        "id": 4,
+        "name": "Shoulder Press",
+        "muscle_group": "Shoulders"
+    },
+    {
+        "id": 5,
+        "name": "Bicep Curl",
+        "muscle_group": "Arms"
+    },
+    {
+        "id": 6,
+        "name": "Plank",
+        "muscle_group": "Core"
+    }
+]
+MUSCLE_GROUPS = [
+    "Chest",
+    "Back",
+    "Legs",
+    "Shoulders",
+    "Arms",
+    "Core"
+]
+
+def show_exercises(exercises):
+        if not exercises:
+            print("No exercises available.")
+            return
+
+        
+        sorted_exercises = sorted(exercises, key=sort_key)
+    
+    
+        for exercise in sorted_exercises:
+            print(
+            f'{exercise["muscle_group"]}: {exercise["name"]}'
+            )
+        
+def sort_key(exercise):
+    return exercise["muscle_group"], exercise["name"]
+
+def clean_exercise_name(name):
+    name = name.strip() 
+
+    while "  " in name:
+        name = name.replace("  ", " ")
+        
+    if len(name) < 1 or len(name) > 60:
+        return None
+    
+    return name
+
+
+
+def exercise_exists(exercises, name):
+    for exercise in exercises:
+        if exercise["name"].lower() == name.lower():
+            return True
+
+    return False
+
+def add_exercise(exercises):
+    while True:
+        name = input("Exercise name: ")
+        name = clean_exercise_name(name)
+
+        if name is None:
+            print("Invalid exercise name.")
+            continue
+
+        if exercise_exists(exercises, name):
+            print("Exercise already exists.")
+            continue
+
+        break
+
+    print("1: Chest")
+    print("2: Back")
+    print("3: Legs")
+    print("4: Shoulders")
+    print("5: Arms")
+    print("6: Core")
+
+    while True:
+        muscle_choice = input("Choose a muscle group (1-6): ")
+
+        if muscle_choice in ["1", "2", "3", "4", "5", "6"]:
+            break
+
+        print("Please choose a number from 1 to 6.")
+
+    muscle_group = MUSCLE_GROUPS[int(muscle_choice) - 1]
+
+    from storage import next_id
+
+    exercise = {
+        "id": next_id(exercises),
+        "name": name,
+        "muscle_group": muscle_group
+    }
+
+    exercises.append(exercise)
