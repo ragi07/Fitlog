@@ -1,10 +1,13 @@
 """Hauptmenü für FitLog mit einem gemeinsamen Datenbestand."""
-from exercises import show_exercises, add_exercise
+from copy import deepcopy
+
+from exercises import show_exercises, add_exercise, search_exercises
 from analytics import show_history, show_progress, show_volume
 from goals import weekly_goal_menu
 from report import export_weekly_report
-from storage import load_data
+from storage import load_data, save_data
 from validation import read_menu_choice
+from workouts import log_workout, delete_workout
 
 MENU_OPTIONS = {
     "1": "Show exercises",
@@ -28,11 +31,28 @@ def show_menu():
         print(f"{number}: {label}")
 
 
+def save_changes(data, previous_data):
+    """Speichere Änderungen oder stelle den bisherigen Bestand wieder her."""
+    if data == previous_data:
+        return
+
+    try:
+        save_data(data)
+    except OSError as error:
+        data.clear()
+        data.update(previous_data)
+        print(f"Could not save the change: {error}")
+        print("Change cancelled. Previous data restored.")
+        return
+
+    print("Changes saved.")
+
+
 def main(data=None):
     """Starte das Menü mit einem gemeinsamen Datenbestand."""
     if data is None:
         try:
-            data = load_data()
+            data = deepcopy(load_data())
         except OSError as error:
             print(f"Could not load the training data: {error}")
             return
@@ -45,6 +65,10 @@ def main(data=None):
             print("Goodbye!")
             return
 
+        if choice in ["2", "4", "5"]:
+            # Erst nach erfolgreichem Schreiben gilt die Änderung dauerhaft.
+            previous_data = deepcopy(data)
+
         if choice not in MENU_OPTIONS:
             print("Please enter a number from 0 to 10.")
             continue
@@ -52,6 +76,12 @@ def main(data=None):
             show_exercises(data["exercises"])
         elif choice == "2":
             add_exercise(data["exercises"])
+        elif choice == "3":
+            search_exercises(data["exercises"])
+        elif choice == "4":
+            log_workout(data["exercises"], data["workouts"])
+        elif choice == "5":
+            delete_workout(data["exercises"], data["workouts"])
         elif choice == "6":
             show_history(data)
         elif choice == "7":
@@ -64,6 +94,9 @@ def main(data=None):
             export_weekly_report(data)
         else:
             print(f"{MENU_OPTIONS[choice]}: not implemented yet.")
+
+        if choice in ["2", "4", "5"]:
+            save_changes(data, previous_data)
 
 
 if __name__ == "__main__":

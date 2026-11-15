@@ -18,27 +18,29 @@ einer leeren Trainingsliste und dem Wochenziel 3. Weitere Starts laden
 wieder dieselbe Datei. Beschädigte Daten werden mit einer Meldung
 abgelehnt und nicht überschrieben.
 
-## Stand vom 9. November 2026
+## Stand vom 15. November 2026
 
 | Menüpunkt | Funktion | Stand |
 | --- | --- | --- |
 | 0 | Beenden | Vorhanden |
 | 1 | Übungen anzeigen | Vorhanden |
-| 2 | Übung hinzufügen | PR #22: ID-Vergabe und Eingabewiederholung offen |
-| 3 | Übungen suchen | Auf Rudinas Branch, PR und Anschluss offen |
-| 4 | Training erfassen | PR #24: numerische Trainings-IDs offen |
-| 5 | Training löschen | PR #25: gemeinsamer Datenstand und Anschluss offen |
+| 2 | Übung hinzufügen | Vorhanden, wird sofort gespeichert |
+| 3 | Übungen suchen | Vorhanden |
+| 4 | Training erfassen | Vorhanden, wird sofort gespeichert |
+| 5 | Training löschen | Vorhanden, mit Bestätigung und sofortigem Speichern |
 | 6 | Historie und Übungsfilter | Vorhanden |
 | 7 | Erstes, letztes und bestes Gewicht | Vorhanden |
 | 8 | Volumen pro Muskelgruppe | Vorhanden |
 | 9 | Wochenziel und Serie | Vorhanden, Änderungen werden sofort gespeichert |
 | 10 | Wochenbericht als CSV | Vorhanden |
 
-Die offenen Punkte 2 bis 5 zeigen auf main weiterhin eine Platzhaltermeldung.
-Ein vollständiger Ablauf mit eigener Trainingseingabe ist deshalb noch offen.
+Alle Menüpunkte sind angeschlossen. Hinzufügen, Erfassen und Löschen
+werden sofort gespeichert. Bei Schreibfehlern wird die Änderung
+im Arbeitsspeicher zurückgenommen; die bisherige Datei bleibt erhalten.
 Der aktuelle Teststand steht in [docs/testprotokoll.md](docs/testprotokoll.md).
 
 Alle Auswertungen arbeiten mit demselben geladenen Datenbestand.
+Neue Übungen stehen direkt bei der Trainingserfassung zur Auswahl.
 Sie verändern die Reihenfolge der gespeicherten Trainings nicht.
 Bei gleichem Datum bleibt die Erfassungsreihenfolge erhalten.
 Für den Fortschritt sind mindestens zwei Einträge derselben Übung nötig.
@@ -58,6 +60,7 @@ UTF-8 mit BOM für Excel. Ein erneuter Export ersetzt den Wochenbericht.
 python -m unittest discover -s tests -v
 ```
 
+68 Tests prüfen die Fachfunktionen und den Gesamtablauf.
 Die Tests verwenden erfundene Daten und für Dateizugriffe temporäre Ordner.
 Die Menüfunktion `main(data)` kann für Tests auch einen Bestand entgegennehmen.
 Ohne Parameter lädt sie die JSON-Datei.
