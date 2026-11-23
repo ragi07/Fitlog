@@ -26,6 +26,6 @@ Die GitHub-Accounts sind `rudinashabanifhnw`, `semayilmazfhnw`,
 `ragi07` und `paddykaelin00-lgtm`. Raul koordiniert Reviews und Integration.
 Die Verantwortung für die eigenen drei Stories bleibt bei jeder Person.
 
-Der Vorschlag für gemeinsame Felder und Regeln steht in
+Die implementierten Felder und Regeln stehen in
 [datenmodell.md](datenmodell.md).
 

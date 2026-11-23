@@ -1,9 +1,7 @@
 # Gemeinsame Datenstruktur für FitLog
 
-Status: konkreter Vorschlag zur gemeinsamen Prüfung im Pull Request.
-Die aktuelle Datei „FitLog - User Stories.docx“ ist die fachliche Grundlage.
-Die unten genannten zusätzlichen Detailentscheidungen sind Vorschläge;
-eine Zustimmung des Teams wird damit nicht behauptet.
+Stand: implementierte Datenstruktur auf main, 23. November 2026.
+Die Datei „FitLog - User Stories.docx“ ist die fachliche Grundlage.
 
 ## Überblick
 
@@ -44,8 +42,7 @@ jeweils ihren eigenen ID-Bereich. Diese numerische Variante passt
 zu den bereits vorhandenen Startübungen.
 
 Beim ersten Start werden sechs Übungen angelegt, eine pro Muskelgruppe.
-Vorgeschlagene Namen stehen in der Beispieldatei. Der konkrete
-Startkatalog ist eine gemeinsame Detailentscheidung.
+Der Startkatalog ist in `exercises.py` als `DEFAULT_EXERCISES` festgelegt.
 
 ## Trainingseintrag
 
@@ -64,14 +61,15 @@ pro Satz. Unterschiedliche Gewichte können als getrennte Einträge
 erfasst werden. Neue Einträge werden an die Liste angehängt.
 
 Leere Datumseingabe bedeutet heute; gespeichert wird das konkrete Datum.
-Ein Punkt oder Komma kann bei der Eingabe des Gewichts akzeptiert werden.
+Bei der Eingabe des Gewichts werden Punkt und Komma akzeptiert.
 In JSON steht das Gewicht als Zahl mit einem Punkt als Dezimaltrenner.
 `NaN`, Unendlich und negative Gewichte sind ungültig.
 
 Übungsname und Muskelgruppe werden über `exercise_id` nachgeschlagen.
 Sie werden nicht zusätzlich im Training gespeichert.
 Die sichtbare Nummer in einem Menü ist nur eine Auswahlhilfe.
-Beim Löschen wird diese Auswahl auf die stabile ID abgebildet.
+Beim Löschen wird der ausgewählte Listeneintrag entfernt. Die nächste ID wird
+wieder aus der höchsten noch vorhandenen ID berechnet.
 
 ## Berechnete Werte
 
@@ -90,20 +88,19 @@ berechnet und nicht als zweite Kopie dauerhaft gespeichert.
   Trainingstag. Eine Woche läuft Montag bis Sonntag.
 - US12: Den aktuellen Wochenbericht aus den Einträgen ableiten.
 
-## Zusätzliche Detailentscheidungen zur Prüfung
+## Umgesetzte Detailentscheidungen
 
 1. Bei gleichem Datum bleibt für US8 die Erfassungsreihenfolge erhalten.
    Der erste und letzte Eintrag sind damit auch bei mehreren Einträgen
    an einem Tag eindeutig. Es wird kein Tagesmaximum als Ersatz für
    den ersten oder letzten Eintrag verwendet.
 2. `weekly_goal` ist eine globale Zielzahl, wie in den aktuellen Stories
-   beschrieben. Vorschlag: Die Serie prüft abgeschlossene Wochen
+   beschrieben. Die Serie prüft abgeschlossene Wochen
    rückwärts ab der letzten Woche gegen diesen aktuellen Zielwert;
    bei der ersten verfehlten Woche endet die Serie. Eine Zieländerung
    wirkt dadurch auch auf die angezeigte historische Serie.
-   Diese Wirkung vor der Umsetzung von US11 gemeinsam bestätigen.
 3. Das Handbuch zeigt teilweise `muscle` und historische
-   `weekly_goals`. Dieser Vorschlag verwendet einheitlich
+   `weekly_goals`. Die Anwendung verwendet einheitlich
    `muscle_group` und `weekly_goal`. Bei einer späteren Entscheidung
    für historische Ziele müssen Format und US11 gemeinsam angepasst werden.
 4. Für US8 gelten die aktuellen Word-Kriterien: bestes, erstes und letztes
@@ -118,18 +115,19 @@ Verantwortlich: Patrick, US10.
 - Beim echten ersten Start: sechs Startübungen, leere Trainingsliste,
   Ziel 3 und Formatkennung erzeugen und speichern.
 - Beim Laden Top-Level-Felder, Datentypen, Wertebereiche,
-  Eindeutigkeit der IDs, Übungsreferenzen, bereinigte eindeutige Namen
+  Eindeutigkeit der IDs, Übungsreferenzen, Namenslänge und eindeutige Namen
   und die sechs zulässigen Muskelgruppen prüfen.
 - Fehlerhafte vorhandene Dateien nicht überschreiben oder durch
   leere Daten ersetzen. Fehlermeldung ausgeben und Programm stoppen.
-- Änderungen erst vollständig prüfen und unmittelbar speichern.
+- Das Menü prüft Eingaben vor der Änderung und speichert Änderungen unmittelbar.
   Bei Schreibfehlern bleibt die bisherige gespeicherte Datei erhalten.
-  Vorschlag: neue Datei im gleichen Ordner temporär schreiben
-  und die Zieldatei erst nach erfolgreichem Schreiben atomar ersetzen.
-- Bei einem fehlgeschlagenen Speichervorgang keine erfolgreiche Änderung
-  bestätigen; den bisherigen Stand im Arbeitsspeicher beibehalten.
-- Beim Schreiben echte Umlaute erhalten und nicht endliche Zahlen ablehnen,
-  beispielsweise mit `ensure_ascii=False` und `allow_nan=False`.
+  Dazu wird eine temporäre Datei im gleichen Ordner geschrieben
+  und die Zieldatei erst nach erfolgreichem Schreiben atomar ersetzt.
+- Bei einem fehlgeschlagenen Speichervorgang wird die Änderung im
+  Arbeitsspeicher zurückgenommen und eine Fehlermeldung ausgegeben.
+- Beim Schreiben bleiben Umlaute durch `ensure_ascii=False` erhalten.
+  Nicht endliche Gewichte werden bei der Eingabe und beim Laden abgelehnt.
+  `save_data()` selbst prüft den Bestand nicht nochmals.
 
 ## CSV-Export
 
@@ -146,7 +144,7 @@ Spalten in dieser Reihenfolge:
 Eine Zeile pro Trainingseintrag der laufenden Woche.
 `exercise` und `muscle_group` über die Übungsreferenz auflösen;
 `volume` beim Export berechnen.
-UTF-8 mit BOM ist als Vorschlag für Excel vorgesehen.
+Der Export verwendet UTF-8 mit BOM für Excel.
 Textfelder mit führendem `=`, `+`, `-` oder `@` durch ein
 vorangestelltes Apostroph entschärfen. Diese Exportdarstellung
 verändert die gespeicherten Trainingsdaten nicht.
@@ -160,10 +158,10 @@ verändert die gespeicherten Trainingsdaten nicht.
 | Raul | Historie, Fortschritt, Gruppenvolumen | Unveränderte Speicherreihenfolge; lesender Zugriff auf Übungen und Trainings |
 | Patrick | Laden/Speichern, Ziel, Export | Formatprüfung und Speicherfehler mit allen Bereichen |
 
-Als einfache gemeinsame Funktionsgrenze kann Patrick
-`load_data() -> dict` und `save_data(data) -> None` bereitstellen.
+`storage.py` stellt `load_data() -> dict` und `save_data(data) -> None` bereit.
+`main.py` lädt den Bestand und speichert Änderungen aus den Menüpunkten 2, 4 und 5.
+Die Zieländerung wird in `goals.py` gespeichert.
 Fachfunktionen erhalten den Bestand bzw. die benötigten Listen als
 Parameter; sie lesen nicht jeweils eigene Dateikopien ein.
-Die konkreten Funktionsnamen stimmt das Team vor der Implementierung ab.
 
 Die zwölf Aufgaben sind in [user_stories.md](user_stories.md) verlinkt.

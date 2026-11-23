@@ -1,4 +1,4 @@
-# Teststand vom 15. November 2026
+# Teststand vom 23. November 2026
 
 ## Wiederholbare Tests
 
@@ -57,12 +57,25 @@ Alle Dateitests laufen in temporären Ordnern.
 - US11: Wochen- und Jahreswechsel, doppelte Trainingstage und Serie ohne aktuelle Woche.
 - US12: ISO-Woche am Jahreswechsel, Umlaute/BOM, Formelschutz und Ersetzen des Berichts.
 
-## Offener Nachtrag
+## Nachtrag US4 abgeschlossen
 
-Issue #29 ist Sema zugewiesen. In manual_test_us4.py steht beim vorhandenen
-Training noch die alte Textreferenz ex-bench statt der numerischen Übungs-ID 1.
-Die getesteten Programmfunktionen verwenden bereits numerische IDs.
-Der manuelle Test und die PR-Beschreibungen sollen von Sema nachgeführt werden.
+Semas PR #31 korrigiert die Übungsreferenz in `manual_test_us4.py` von
+`"ex-bench"` auf `1`. Die Änderung wurde geprüft und am 23. November übernommen.
+Der Testnachweis mit numerischen IDs steht in Issue #29 und PR #31.
 
-Die technische Integration ist geprüft. Das gemeinsame Durchspielen auf einem
-zweiten Rechner und die Erklärung der eigenen Funktionen folgen mit dem Team.
+Der korrigierte Test wurde zusätzlich mit vorgegebenen Terminaleingaben ausgeführt:
+ungültiges Datum, falsche Übungsauswahl, ungültige Sätze und Wiederholungen sowie
+negatives Gewicht werden abgelehnt. Anschliessend entsteht genau ein neuer Eintrag
+mit ID 2 und Übungs-ID 3. Die ID-Fälle 3/1/2, 3/1 und leere Liste liefern 4, 4 und 1.
+Alle 68 automatischen Tests bestehen am 23. November erneut.
+
+## Noch gemeinsam prüfen
+
+- Start anhand der README auf einem zweiten Rechner durchführen und Ergebnis festhalten.
+- Jede Person erklärt ihre drei User Stories und die verwendeten Daten.
+- Den Menüablauf für die Präsentation gemeinsam durchspielen.
+
+Eine kleine Unstimmigkeit bleibt bei der Ausgabe: `workouts.py` meldet
+„Workout saved“ bereits vor dem Dateischreiben in `main.py`. Bei einem
+Schreibfehler folgen Fehlermeldung und Rücknahme korrekt; die vorzeitige
+Erfolgsmeldung sollte noch angepasst werden.
